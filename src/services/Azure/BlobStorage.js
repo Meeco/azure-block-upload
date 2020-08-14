@@ -58,7 +58,7 @@ const putBlockList = async (sasUrl, blockIDList, fileType) => {
  */
 const getBlock = async (sasUrl, range) => {
   const url = `${sasUrl}`;
-  const headers = range ? { "x-ms-range": `bytes=${range}` } : {};
+  const headers = range ? { "x-ms-range": `${range}` } : {};
   return axios({
     method: "get",
     url,
