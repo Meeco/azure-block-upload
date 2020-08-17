@@ -140,7 +140,7 @@ class AzureBlockUpload {
           blockIDList.push(blockID);
 
           const blockBuffer = await FileUtils.readBlock(this.file, from, to);
-          artifacts.range[nBlock] = `bytes=${from}-${to}`;
+          artifacts.range[nBlock] = `bytes=${from}-${to - 1}`;
 
           const data = new Uint8Array(blockBuffer);
 
@@ -155,7 +155,7 @@ class AzureBlockUpload {
             );
             artifacts.iv[nBlock] = iv;
             artifacts.at[nBlock] = encrypt.artifacts.at;
-            console.log(encrypt);
+            //console.log(encrypt);
           }
 
           await BlobStorage.putBlock(

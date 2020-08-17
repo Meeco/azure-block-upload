@@ -20,7 +20,11 @@ class AzureBlockDownload {
    */
   async start(dataEncryptionKey, strategy, encryptionArtifact, range) {
     if (range) {
+      //console.log("range: " + range);
       const block = await BlobStorage.getBlock(this.url, range);
+      //console.log("block: " + block);
+      //console.log("block data: " + block.data);
+      //console.log("block data size : " + FileUtils.getSize(block.data));
       const fileBuffer = await FileUtils.readBlock(
         block.data,
         0,
@@ -32,9 +36,9 @@ class AzureBlockDownload {
 
       let byteNumbers = [];
       if (dataEncryptionKey && strategy && encryptionArtifact) {
-        console.log("key" + dataEncryptionKey);
-        console.log("encryption artifact" + JSON.stringify(encryptionArtifact));
-        console.log("strategy" + strategy);
+        //console.log("key" + dataEncryptionKey);
+        //console.log("encryption artifact" + JSON.stringify(encryptionArtifact));
+        //console.log("strategy" + strategy);
         const str = Cryppo.decryptWithKeyUsingArtefacts(
           dataEncryptionKey,
           Cryppo.binaryBufferToString(data),
@@ -42,15 +46,16 @@ class AzureBlockDownload {
           encryptionArtifact
         );
 
-        // console.log("str" + str);
-        // console.log("string lenght" + str.length);
+        //console.log("str" + str);
+        //console.log("string lenght" + str.length);
 
         for (let i = 0; i < str.length; i++) {
           byteNumbers.push(str.charCodeAt(i));
         }
-        // console.log("byteNumber: " + byteNumbers);
+        //console.log("byteNumber: " + byteNumbers);
       }
       return new Promise((resolve) => {
+        //console.log("resolve byteNumber: " + byteNumbers);
         resolve(byteNumbers || data);
       });
     } else {
